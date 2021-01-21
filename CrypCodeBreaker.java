@@ -10,6 +10,7 @@ import java.util.ArrayList;
  * 
  * @author Aaron Bitman
  * @version 1.0 03/20/19
+ * @version 2.0 01/20/21
  */
 
 public class CrypCodeBreaker {
@@ -21,10 +22,9 @@ public class CrypCodeBreaker {
 	 * @param plainText     The possible (candidate) plaintext word
 	 * @param likeExclusion Whether the user selected like-exclusion
 	 * @param crypKey       The known plaintext letters
-	 * @return <code>true</code> if the <code>cipherText</code> and <code>plainText</code> are compatible, or
-	 *         <code>false</code> if the <code>cipherText</code> and <code>plainText</code> are not compatible
+	 * @return true if the ciphertext and plaintext are compatible, false otherwise
 	 */
-	private static boolean compatible(String cipherText, String plainText, boolean likeExclusion, CrypKey crypKey) {
+	static boolean compatible(String cipherText, String plainText, boolean likeExclusion, CrypKey crypKey) {
 		
 		int index1, index2, wordLength = cipherText.length();
 		char char1, char2;
@@ -70,15 +70,14 @@ public class CrypCodeBreaker {
 	 * @param likeExclusion  Whether the user selected the like-exclusion option
 	 * @param crypKey        The known letters and their plaintext
 	 * @return An array of Strings, each String a candidate plaintext translation
-	 * @throws FileNotFoundException If the program can't find the right dictionary file
+	 * @throws java.io.FileNotFoundException If the program can't find the dictionary file
 	 */
-	public static String[] breakWord(String cipherTextWord, boolean likeExclusion, CrypKey crypKey)
+	public static ArrayList<String> breakWord(String cipherTextWord, boolean likeExclusion, CrypKey crypKey)
 	{
 		String plainTextWord;
 		ArrayList<String> temp = new ArrayList<String>();
 		int length = cipherTextWord.length();
 		int total = 0;
-		int index;
 		
 		try {
 			// Open the input file.
@@ -98,17 +97,13 @@ public class CrypCodeBreaker {
 		// Close the file.
 		inFile.close();
 		if (total==0) {
-			total=1;
 			temp.add("No results found.");
 		}
-		String[] results = new String[total];
-		for (index=0; index < total; index++)
-				results[index] = temp.get(index).toString();
-		return results;
+		return temp;
 		}
 		catch (FileNotFoundException f1) {
-			String[] error = {"Error: The input file was not found."};
-			return error;
+			temp.add("Error: The input file was not found.");
+			return temp;
 		}
 	}
 }

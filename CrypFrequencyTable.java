@@ -6,12 +6,13 @@ import java.util.Arrays;
  * This class represents a table of ciphertext letters and their frequency in a puzzle.
  * 
  * @author Aaron Bitman
- * @version 2.0 06/21/2019
+ * @version 1.0 06/21/19
+ * @version 2.0 01/20/21
  */
 public class CrypFrequencyTable {
 	
-	private final int LETTERSINALPHABET = 26;
-	private CrypFreqTableEntry frequencyTable[] = new CrypFreqTableEntry[LETTERSINALPHABET];
+	private static final int LETTERS_IN_ALPHABET = 26;
+	private CrypFreqTableEntry frequencyTable[] = new CrypFreqTableEntry[LETTERS_IN_ALPHABET];
 	private String freqAlpha, freqByPop;
 
 	/**
@@ -20,18 +21,18 @@ public class CrypFrequencyTable {
 	 */
 	CrypFrequencyTable(String puzzle) {
 
-		final int CAPTIALLETTEROFFSET = 65;
+		final int CAPTIAL_LETTER_OFFSET = 65;
 		int puzzleLength = puzzle.length();
 		char currentCharacter;
 		int index; //used for several purposes
 
-		for (index = 0; index < LETTERSINALPHABET; index++)
-			frequencyTable[index] = new CrypFreqTableEntry((char)(index + CAPTIALLETTEROFFSET));
+		for (index = 0; index < LETTERS_IN_ALPHABET; index++)
+			frequencyTable[index] = new CrypFreqTableEntry((char)(index + CAPTIAL_LETTER_OFFSET));
 
 		for (index = 0; index < puzzleLength; index++) {
 			currentCharacter = puzzle.charAt(index);
 			if (currentCharacter >= 'A' && currentCharacter <= 'Z')
-				frequencyTable[(int) currentCharacter - CAPTIALLETTEROFFSET].increment();
+				frequencyTable[(int) currentCharacter - CAPTIAL_LETTER_OFFSET].increment();
 		}
 		
 		freqAlpha = setFreqAlpha();
@@ -48,7 +49,7 @@ public class CrypFrequencyTable {
 		int index;
 		int occurrences;
 		
-		for (index=0; index < LETTERSINALPHABET; index++) {
+		for (index=0; index < LETTERS_IN_ALPHABET; index++) {
 			occurrences = frequencyTable[index].getOccurrences();
 			if (occurrences > 0) {
 				if (!temp.equals(""))
@@ -85,7 +86,7 @@ public class CrypFrequencyTable {
 			}
 			temp += entry.getLetter();
 			index++;
-		 } while (index < LETTERSINALPHABET);
+		 } while (index < LETTERS_IN_ALPHABET);
 	
 		return temp;
 	}

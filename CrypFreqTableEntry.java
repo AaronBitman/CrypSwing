@@ -8,7 +8,7 @@ import java.util.Comparator;
  * 
  * @author Aaron Bitman
  * @version 1.0 03/27/19
- *
+ * @version 2.0 01/20/21
  */
 class CrypFreqTableEntry implements Comparable<CrypFreqTableEntry> {
 	private char letter;
@@ -73,8 +73,7 @@ class CrypFreqTableEntry implements Comparable<CrypFreqTableEntry> {
 		 * 
 		 * @param entry1	The first entry to be compared
 		 * @param entry2	The second entry to be compared
-		 * @return <code>1</code> if the second entry should come first
-		 *         <code>-1</code> if the first entry should come first
+		 * @return 1 if the second entry should come first, -1 if the second one should
 		 */
 			public int compare(CrypFreqTableEntry entry1, CrypFreqTableEntry entry2) {
 				return entry1.compareTo(entry2);

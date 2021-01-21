@@ -8,6 +8,7 @@ import java.awt.KeyboardFocusManager;
  * This class has all the code for what to do when a user hits a key in the word-solving GUI.
  * @author Bitman
  * @version 1.0 07/21/19
+ * @version 2.0 01/20/21
  */
 public class CrypWordKeyEvent implements KeyListener {
 
@@ -19,37 +20,6 @@ public class CrypWordKeyEvent implements KeyListener {
 	 */
 	public CrypWordKeyEvent(CrypWordFrame in) {
 		gui = in;
-	}
-	
-	/**
-	 * Determines the actual ciphertext word for which the program will search.
-	 * @return The ciphertext word
-	 */
-	private String actualCiphertextWord() {
-		char ciphertextChar;
-		int index = 0;
-		String fieldContent, temp = "";
-		
-		for (index=0; index < gui.MAXWORDLENGTH; index++) {
-			fieldContent = gui.ciphertext[index].getText();
-			if (fieldContent.isEmpty())
-				return temp;
-			ciphertextChar = fieldContent.charAt(0);
-			if (!charValid(ciphertextChar))
-				return temp;
-			temp += ciphertextChar;
-		}
-		
-		return temp;
-	}
-	
-	/**
-	 * Determines if a character is valid in this kind of puzzle.
-	 * @param c The character
-	 * @return true if valid; false if not
-	 */
-	private boolean charValid (char c) {
-		return ((c == '\'') || (c >= 'A' && c <= 'Z') || (c == '-'));
 	}
 	
 	/**
@@ -85,7 +55,7 @@ public class CrypWordKeyEvent implements KeyListener {
 		
 		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 		
-		if (charValid(inputChar)) {
+		if (gui.puzzleFrame.validCiphertextChar(inputChar)) {
 			((JTextField) event.getSource()).setText(inputString);
 			manager.focusNextComponent();
 		}
@@ -97,15 +67,15 @@ public class CrypWordKeyEvent implements KeyListener {
 			manager.focusNextComponent();
 		else if (inputAsInt == KeyEvent.VK_UP || inputAsInt == KeyEvent.VK_DOWN) {
 			if (ciphertextIsCurrent)
-				gui.plaintext[Integer.parseInt(event.getComponent().getName().substring(10))].requestFocus();
+				gui.plaintext[Integer.parseInt(event.getComponent().getName().substring(10))].requestFocusInWindow();
 			else // Presumably, plaintext is current
-				gui.ciphertext[Integer.parseInt(event.getComponent().getName().substring(9))].requestFocus();
+				gui.ciphertext[Integer.parseInt(event.getComponent().getName().substring(9))].requestFocusInWindow();
 		}
 		else if (inputAsInt == KeyEvent.VK_HOME)
 			if (ciphertextIsCurrent)
-				gui.ciphertext[0].requestFocus();
+				gui.ciphertext[0].requestFocusInWindow();
 			else // Presumably, plaintext is current
-				gui.plaintext[0].requestFocus();
+				gui.plaintext[0].requestFocusInWindow();
 		//This next bit is unnecessary now that we made the Solve button the default.
 		//else if (inputAsInt == KeyEvent.VK_ENTER) {
 		//	ActionEvent ae = 
@@ -119,6 +89,6 @@ public class CrypWordKeyEvent implements KeyListener {
 		}
 				
 		if (ciphertextIsCurrent)
-			gui.actualCiphertextWord.setText(actualCiphertextWord());
+			gui.SetActualCiphertextWord();
 	}
 }

@@ -6,6 +6,7 @@ package crypSwing;
  * e.g. the second character is a plaintext E.
  * @author Aaron Bitman
  * @version 1.0 03/20/19
+ * @version 2.0 01/20/21
  */
 
 public class CrypKeyEntry {
@@ -16,7 +17,7 @@ public class CrypKeyEntry {
 	 */
 	private int index;
 	/**
-	 * What that <index> character is in plaintext
+	 * What that "index" character is in plaintext
 	 */
 	private char plainText;
 
@@ -48,7 +49,7 @@ public class CrypKeyEntry {
 	/**
 	 * Sets one entry in the key.
 	 * @param index     The index; see the "index" member for further clarification.
-	 * @param plainText What that <index> character is in plaintext.
+	 * @param plainText What that index character is in plaintext.
 	 */
 	void setCrypKeyEntry (int index, char plainText) {
 		
@@ -59,8 +60,7 @@ public class CrypKeyEntry {
 	/**
 	 * Determines whether a plaintext word conforms to the key entry.
 	 * @param plainText
-	 * @return <code>true</code> if the word conforms
-	 *         <code>false</code> if the word does not conform
+	 * @return true if the word conforms, false otherwise
 	 */
 	boolean conforms (String plainText) {
 		return plainText.charAt(index) == this.plainText;
@@ -68,8 +68,7 @@ public class CrypKeyEntry {
 
 	/**
 	 * Determines if the entry is valid.
-	 * @return <code>true</code> if the user entered a real key entry
-	 *         <code>false</code> if (s)he quit entering entries
+	 * @return true if the user entered a real key entry, false if (s)he quit entering entries
 	 */
 	boolean isValid () {
 		return index > -1;

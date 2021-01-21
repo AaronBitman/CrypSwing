@@ -9,6 +9,7 @@ import java.util.List;
  * 
  * @author Aaron Bitman
  * @version 1.0 03/20/19
+ * @version 2.0 01/20/21
  */
 
 public class CrypKey {
@@ -32,9 +33,7 @@ public class CrypKey {
 	/**
 	 * Determines whether a plaintext word conforms to the key.
 	 * @param plainText The plaintext word
-	 * @return <code>true</code> if the <code>plainText</code> conforms to the key
-	 *         <code>false</code> if the <code>plainText</code> does not conform to the key
-
+	 * @return true if the plaintext conforms to the key, false otherwise
 	 */
 	boolean conforms (String plainText) {
 		
