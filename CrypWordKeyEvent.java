@@ -55,7 +55,7 @@ public class CrypWordKeyEvent implements KeyListener {
 		
 		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 		
-		if (gui.puzzleFrame.validCiphertextChar(inputChar)) {
+		if (CrypSwingFrame.validCiphertextChar(inputChar)) {
 			((JTextField) event.getSource()).setText(inputString);
 			manager.focusNextComponent();
 		}

@@ -37,17 +37,17 @@ public class CrypWordFrameParameters {
 			fieldContent = puzzleFrame.ciphertext[colNum-1][rowNum].getText();
 			if (fieldContent == null) break;
 			if (fieldContent.trim().isEmpty()) break;
-			if (!puzzleFrame.validCiphertextChar(fieldContent.charAt(0))) break;
+			if (!CrypSwingFrame.validCiphertextChar(fieldContent.charAt(0))) break;
 			colNum--;
 		}
 		
 		index = colNum;
-		while (index < puzzleFrame.LINE_LENGTH) {
+		while (index < CrypSwingFrame.LINE_LENGTH) {
 			// Read the whole ciphertext word...
 			fieldContent = puzzleFrame.ciphertext[index][rowNum].getText();
 			if (fieldContent == null) break;
 			if (fieldContent.trim().isEmpty()) break;
-			if (!puzzleFrame.validCiphertextChar(fieldContent.charAt(0))) break;
+			if (!CrypSwingFrame.validCiphertextChar(fieldContent.charAt(0))) break;
 			ciphertextWord += fieldContent;
 			
 			// ...and the known (or assumed) plaintext.
