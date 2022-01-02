@@ -6,6 +6,7 @@ import java.util.*;
  * This class takes a cryptogram and builds an object with the significant words and their possible translations.
  * @author Bitman
  * @version 2.0 01/20/21
+ * @version 2.1 01/02/21
  */
 public class CrypCiphertextWordMappingGroup {
 
@@ -22,7 +23,7 @@ public class CrypCiphertextWordMappingGroup {
 		String currentWord;
 		CrypCiphertextWordMapping newElement;
 		
-		// Yeah, we could split the puzzle succinctly with a regular expression, like "puzzle.split("[^A-Z']"))",
+		// Yeah, we could split the puzzle succinctly with a regular expression, like 'puzzle.split("[^A-Z']"))',
 		// but then, for some reason, removing a word from the list causes a runtime exception.
 		// Besides, we get more flexibility by stepping through the process manually.
 
@@ -142,6 +143,12 @@ public class CrypCiphertextWordMappingGroup {
 
 		// Fourth of all, if the alphabet mapping is getting narrower, that might signify progress.
 		 if (originalAlphabetMapSize > alphabetMap.size()) return true;
+
+		 // Fifth of all, if the best word is the same, we might theoretically do more
+		 // with it in the future, but not using this algorithm. So let's trash it...
+		 wordMapArray.remove(0);
+		 // ...and unless the word list ran dry, we can try again with the next word.
+		 if (wordMapArray.size() > 0) return true;
 
 		 // After all that, I see no sign that we've done any good.
 		 return false;

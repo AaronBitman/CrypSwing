@@ -11,12 +11,12 @@ import javax.swing.border.Border;
  * @author Aaron Bitman
  * @version 1.0 07/21/19
  * @version 2.0 01/20/21
+ * @version 2.1 01/02/21
  */
 public class CrypSwingBtnEvent implements ActionListener {
 	
 	CrypSwingFrame gui;
-	static Border noBorder, yesBorder;
-	static Color windowColor;
+	static Border yesBorder;
 
 	/**
 	 * The constructor takes the GUI Frame to point to it.
@@ -24,9 +24,7 @@ public class CrypSwingBtnEvent implements ActionListener {
 	 */
 	public CrypSwingBtnEvent(CrypSwingFrame in) {
 		gui = in;
-		noBorder = BorderFactory.createEmptyBorder();
 		yesBorder = gui.plaintext[0][0].getBorder();
-		windowColor = gui.getBackground();
 	}
 
 	/**
@@ -40,18 +38,6 @@ public class CrypSwingBtnEvent implements ActionListener {
 	}
 	
 	/**
-	 * This function takes a text field and makes it uneditable, displaying the ciphertext character instead.
-	 * @param jtf     The text field
-	 * @param display The character to display
-	 */
-	void makeUneditable (JTextField jtf, char display) {
-		jtf.setFocusable(false);
-		jtf.setBorder(noBorder);
-		jtf.setBackground(windowColor);
-		jtf.setText(Character.toString(display));
-	}
-	
-	/**
 	 * This function wipes out a line of ciphertext, starting from a given character.
 	 * @param startIndex From which character of the line (to its end) to wipe out
 	 * @param lineIndex  Which line to wipe out
@@ -60,7 +46,7 @@ public class CrypSwingBtnEvent implements ActionListener {
 		//
 		while (startIndex < CrypSwingFrame.LINE_LENGTH) {
 			gui.ciphertext[startIndex][lineIndex].setText(" ");
-			makeUneditable(gui.plaintext[startIndex][lineIndex], ' ');
+			gui.makeUneditable(gui.plaintext[startIndex][lineIndex], ' ');
 			startIndex++;
 		}
 	}
@@ -119,7 +105,7 @@ public class CrypSwingBtnEvent implements ActionListener {
 					gui.plaintext[charInLine][lineIndex].setText("");
 				}
 				else {
-					makeUneditable(gui.plaintext[charInLine][lineIndex], currentChar);
+					gui.makeUneditable(gui.plaintext[charInLine][lineIndex], currentChar);
 				}
 				charInLine++;
 			}

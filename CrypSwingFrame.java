@@ -1,14 +1,17 @@
 package crypSwing;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.*;
+import javax.swing.border.Border;
 
 /**
  * This class has the frame for the puzzle GUI.
  * @author Bitman
  * @version 1.0 07/21/19
  * @version 2.0 01/20/21
+ * @version 2.1 01/02/21
  */
 public class CrypSwingFrame extends JFrame {
 
@@ -18,6 +21,8 @@ public class CrypSwingFrame extends JFrame {
 	static final int NUMBER_OF_LINES = 7;
 	static final int NUMBER_OF_HALF_LINES = NUMBER_OF_LINES * 2;
 	static final int BUTTON_WIDTH = 10;
+	static Border noBorder;
+	static Color windowColor;
 
 	// Declare all visual objects here.
 	CrypSwingLetterField[][] plaintext = new CrypSwingLetterField[LINE_LENGTH][NUMBER_OF_LINES];
@@ -40,7 +45,9 @@ public class CrypSwingFrame extends JFrame {
 	 * The constructor sets up all the controls and other important frame stuff.
 	 */
 	public CrypSwingFrame() {
-		
+		noBorder = BorderFactory.createEmptyBorder();
+		windowColor = getBackground();
+
 		int doubleRowIndex = 0;
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -105,6 +112,13 @@ public class CrypSwingFrame extends JFrame {
 		// Set up the frame.
 		pack();
 		setVisible(true);
+		doubleRowIndex = 0;
+		for (constraints.gridy = 0; constraints.gridy < NUMBER_OF_LINES; constraints.gridy++) {
+			for (constraints.gridx = 0; constraints.gridx < LINE_LENGTH; constraints.gridx++)
+				makeUneditable(plaintext[constraints.gridx][doubleRowIndex], ' ');
+			doubleRowIndex++;
+		}
+
 	}
 
 	/**
@@ -126,9 +140,21 @@ public class CrypSwingFrame extends JFrame {
 	public static boolean validCiphertextChar(char c) {
 		return ((c == '\'') || (c >= 'A' && c <= 'Z'));
 	}
+	
+	/**
+	 * This function takes a text field and makes it uneditable, displaying the ciphertext character instead.
+	 * @param jtf     The text field
+	 * @param display The character to display
+	 */
+	void makeUneditable (JTextField jtf, char display) {
+		jtf.setFocusable(false);
+		jtf.setBorder(noBorder);
+		jtf.setBackground(windowColor);
+		jtf.setText(Character.toString(display));
+	}
 
 	/**
-	 * All over the puzzle, translate the ciphertext character into the user's choice - guess - of plaintext.
+	 * All over the puzzle, translate the ciphertext character into the user's choice - or guess - of plaintext.
 	 * @param ciphertext The ciphertext character to translate
 	 * @param plaintext  The user's choice of plaintext translation
 	 */

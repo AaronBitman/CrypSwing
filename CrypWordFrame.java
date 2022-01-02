@@ -12,6 +12,7 @@ import javax.swing.*;
  * @author Bitman
  * @version 1.0 07/21/19
  * @version 2.0 01/20/21
+ * @version 2.1 01/02/21
  */
 public class CrypWordFrame extends JFrame {
 
@@ -131,12 +132,12 @@ public class CrypWordFrame extends JFrame {
 		results.setFixedCellHeight(16);
 		add(scroll, constraints);
 		results.addMouseListener(CrypWordMouseActions);
-		
+
 		// Set up the frame.
 		pack();
 		setVisible(true);
 		ciphertext[0].requestFocus();
-		
+
 		// If there's valid text to enter...
 		if (selectedWord != null) {
 			// ...then enter it.
@@ -145,7 +146,7 @@ public class CrypWordFrame extends JFrame {
 			SetActualCiphertextWord();
 			puzzleRowNum = selectedWord.rowNum;
 			puzzleColNum = selectedWord.colNum;
-			
+
 			// And enter known (or assumed) ciphertext.
 			for (index = 0; index < selectedWord.knownPlaintext.keyEntries.size(); index++) {
 				plaintext[selectedWord.knownPlaintext.keyEntries.get(index).getIndex()].setText(
