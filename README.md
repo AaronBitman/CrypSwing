@@ -1,7 +1,13 @@
 # CrypSwing
 A cryptogram solver using Java and Swing classes
 
-The current version of CrypSwing is 2.1. You can see a demo video of 2.0 at either of these URLs:
+The current version of CrypSwing is 3.0. To learn how to use it, see the demo video at either of these URLs:
+
+https://www.youtube.com/watch?v=6U6fpo6y8L4
+
+https://vimeo.com/778171783
+
+You can see a demo video of CrypSwing 2.0 at either of these URLs:
 
 https://www.youtube.com/watch?v=KoZdzePPQqs
 
