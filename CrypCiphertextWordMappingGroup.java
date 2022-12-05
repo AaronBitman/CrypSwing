@@ -6,7 +6,8 @@ import java.util.*;
  * This class takes a cryptogram and builds an object with the significant words and their possible translations.
  * @author Bitman
  * @version 2.0 01/20/21
- * @version 2.1 01/02/21
+ * @version 2.1 01/02/22
+ * @version 3.0 11/30/22
  */
 public class CrypCiphertextWordMappingGroup {
 
@@ -15,13 +16,14 @@ public class CrypCiphertextWordMappingGroup {
 
 	/** This constructor takes the cryptogram puzzle and maps (most of) its words to possible translations.
 	 * @param puzzle The cryptogram
-	 * @param likeExclusion The user's choice of whether to assume like-exclusion
+	 * @param alphabetMap The mapping of every possible plaintext translation of each ciphertext letter
 	 */
-	CrypCiphertextWordMappingGroup(String puzzle, boolean likeExclusion) {
+	CrypCiphertextWordMappingGroup(String puzzle, CrypAlphabetMapping alphabetMap) {
 		int index = 0;
 		boolean inParentheses = false;
 		String currentWord;
 		CrypCiphertextWordMapping newElement;
+		this.alphabetMap = alphabetMap;
 		
 		// Yeah, we could split the puzzle succinctly with a regular expression, like 'puzzle.split("[^A-Z']"))',
 		// but then, for some reason, removing a word from the list causes a runtime exception.
@@ -41,7 +43,7 @@ public class CrypCiphertextWordMappingGroup {
 				if (inParentheses && currentWord.length() < 2) continue;
 				// For another example, don't add a word that's already added.
 				if (alreadyStored(currentWord)) continue;
-				newElement = new CrypCiphertextWordMapping(currentWord, likeExclusion);
+				newElement = new CrypCiphertextWordMapping(currentWord, this.alphabetMap);
 				// For yet another example, don't add any words with no known plaintext translations.
 				if (newElement.numberOfCandidates() == 0) continue;
 				// After all those qualifications, add the word!
@@ -61,9 +63,6 @@ public class CrypCiphertextWordMappingGroup {
 
 		// Now sort the ciphertext word entries.
 		wordMapArray.sort(CrypCiphertextWordMapping.CrypCiphertextWordMappingComparator);
-
-		// Map each ciphertext character to every plaintext letter to which it might map.
-		alphabetMap = new CrypAlphabetMapping(likeExclusion);
 
 		// Now try to come up with some possible translations; keep paring
 		// down the possibilities until it doesn't seem to do any more good.
@@ -95,7 +94,7 @@ public class CrypCiphertextWordMappingGroup {
 		// Incidentally, remember the number of candidates for this word for possible future use.
 		int originalNumberOfCandidates = wordToTry.numberOfCandidates();
 		// Also remember the size of the alphabet mapping.
-		int originalAlphabetMapSize = alphabetMap.size();
+		int originalAlphabetMapSize = this.alphabetMap.size();
 
 		// For each ciphertext letter in that word...
 		for (int index = 0; index < wordToTry.getCiphertext().length(); index++) {

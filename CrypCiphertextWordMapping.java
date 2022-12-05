@@ -6,6 +6,7 @@ import java.util.*;
  * This class contains one ciphertext word and every plaintext word to which we might guess it maps.
  * @author Bitman
  * @version 2.0 01/20/21
+ * @version 3.0 11/30/22
  */
 public class CrypCiphertextWordMapping implements Comparable<CrypCiphertextWordMapping> {
 	
@@ -15,15 +16,17 @@ public class CrypCiphertextWordMapping implements Comparable<CrypCiphertextWordM
 	/**
 	 * This constructor takes a ciphertext word and stores all the initial guesses of the plaintext translations.
 	 * @param ciphertextWord The ciphertext word
-	 * @param likeExclusion  Whether the user chose the "like-exclusion" option.
+	 * @param alphabetMap The mapping of every possible plaintext translation of each ciphertext letter
 	 */
-	public CrypCiphertextWordMapping(String ciphertextWord, boolean likeExclusion) {
+	public CrypCiphertextWordMapping(String ciphertextWord, CrypAlphabetMapping alphabetMap) {
 		ciphertext = ciphertextWord;
 		CrypKey dummy = new CrypKey();
 
-		plaintextCandidates = CrypCodeBreaker.breakWord(ciphertext, likeExclusion, dummy);
+		plaintextCandidates = CrypCodeBreaker.breakWord(ciphertext, false, dummy);
 		// This code assumes that if the code breaker finds nothing, it returns a message with at least one space in it.
 		if (plaintextCandidates.get(0).contains(" ")) plaintextCandidates.clear();
+		// Now eliminate all the plaintext translations that don't conform to the alphabet map.
+		pareDown(alphabetMap);
 	}
 
 	/**

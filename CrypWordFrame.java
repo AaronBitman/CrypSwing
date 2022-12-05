@@ -12,7 +12,7 @@ import javax.swing.*;
  * @author Bitman
  * @version 1.0 07/21/19
  * @version 2.0 01/20/21
- * @version 2.1 01/02/21
+ * @version 2.1 01/02/22
  */
 public class CrypWordFrame extends JFrame {
 

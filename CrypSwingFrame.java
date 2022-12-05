@@ -11,7 +11,8 @@ import javax.swing.border.Border;
  * @author Bitman
  * @version 1.0 07/21/19
  * @version 2.0 01/20/21
- * @version 2.1 01/02/21
+ * @version 2.1 01/02/22
+ * @version 3.0 11/30/22
  */
 public class CrypSwingFrame extends JFrame {
 
@@ -32,7 +33,9 @@ public class CrypSwingFrame extends JFrame {
 	JButton populatePuzzle = new JButton("Populate Puzzle");
 	JButton solveWord = new JButton("Solve Word");
 	JButton clear = new JButton ("Clear");
-	
+	JButton guess = new JButton ("Guess");
+	JButton about = new JButton ("About");
+
 	// Declare all Event objects here.
 	CrypSwingBtnEvent CrypPuzzleGridBagBtnActions;
 	CrypSwingKeyEvent CrypPuzzleGridBagKeyActions;
@@ -108,6 +111,14 @@ public class CrypSwingFrame extends JFrame {
 		add(clear, constraints);
 		clear.setActionCommand("CLEAR");
 		clear.addActionListener(CrypPuzzleGridBagBtnActions);
+		constraints.gridx += BUTTON_WIDTH;
+		add(guess, constraints);
+		guess.setActionCommand("GUESS");
+		guess.addActionListener(CrypPuzzleGridBagBtnActions);
+		constraints.gridx += BUTTON_WIDTH;
+		add(about, constraints);
+		about.setActionCommand("ABOUT");
+		about.addActionListener(CrypPuzzleGridBagBtnActions);
 
 		// Set up the frame.
 		pack();
@@ -166,7 +177,7 @@ public class CrypSwingFrame extends JFrame {
 				if (ciphertext[charIndex][lineIndex].getText().charAt(0) == ciphertextLetter.charAt(0))
 					plaintext[charIndex][lineIndex].setText(plaintextLetter);
 	}
-	
+
 	/**
 	 * Take the user's guess at the plaintext of one ciphertext word.
 	 * @param rowNum    The row in the puzzle with the ciphertext word
@@ -174,11 +185,11 @@ public class CrypSwingFrame extends JFrame {
 	 * @param plaintext The plaintext we're guessing
 	 */
 	public void guess(int rowNum, int colNum, String plaintext) {
-		
+
 		String currentText, ciphertextWord = "";
 		int colIndex = colNum;
 		CrypKey ignore = new CrypKey();
-		
+
 		// First of all, since it's possible that the user could have changed the ciphertext, check that it's still compatible.
 		currentText = ciphertext[colIndex][rowNum].getText();
 		if (currentText == null) return;

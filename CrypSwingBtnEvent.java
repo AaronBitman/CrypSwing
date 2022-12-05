@@ -2,21 +2,25 @@ package crypSwing;
 
 import java.awt.event.*;
 import java.util.HashMap;
+import java.util.Collections;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.JOptionPane;
 
 /**
  * This class has the code for when a user hits a button in the main CrypSwing window.
  * @author Aaron Bitman
  * @version 1.0 07/21/19
  * @version 2.0 01/20/21
- * @version 2.1 01/02/21
+ * @version 2.1 01/02/22
+ * @version 3.0 11/30/22
  */
 public class CrypSwingBtnEvent implements ActionListener {
 	
 	CrypSwingFrame gui;
 	static Border yesBorder;
+	String puzzle;
 
 	/**
 	 * The constructor takes the GUI Frame to point to it.
@@ -128,10 +132,14 @@ public class CrypSwingBtnEvent implements ActionListener {
 		gui.freqAlpha.setText(freqTable.getFreqAlpha());
 
 		// Populate the plaintext with some initial guesses.
-		CrypCiphertextWordMappingGroup wordMapGroup = new CrypCiphertextWordMappingGroup(puzzle, (likeExclusion == "Y"));
-		for (HashMap.Entry<Character, CrypLetterMapping> entry : wordMapGroup.alphabetMap.translations.entrySet())
+		CrypAlphabetMapping alphabetMap = new CrypAlphabetMapping(likeExclusion == "Y");
+		CrypCiphertextWordMappingGroup wordMapGroup = new CrypCiphertextWordMappingGroup(puzzle, alphabetMap);
+		for (HashMap.Entry<Character, CrypLetterMapping> entry : alphabetMap.translations.entrySet())
 			if (entry.getValue().size() == 1)
 				gui.translateEverywhere(entry.getKey().toString(), entry.getValue().possiblePlaintext());
+		
+		// Finally, hold onto the puzzle in String form in case the user wants to make another guess later.
+		this.puzzle = puzzle;
 	}
 	
 	/**
@@ -153,6 +161,7 @@ public class CrypSwingBtnEvent implements ActionListener {
 		String action = btnEvent.getActionCommand();
 		switch (action) {
 		case "POPULATE":
+			// Open the window to let the user populate the puzzle, and if appropriate, populate it.
 			CrypEnterPuzzle enterPuzzleWindow = new CrypEnterPuzzle(gui);
 			String[] results = enterPuzzleWindow.run();
 			if (results[0] != null)
@@ -162,6 +171,7 @@ public class CrypSwingBtnEvent implements ActionListener {
 			break;
 			
 		case "SOLVEWORD":
+			// Open the window to solve one word (possibly populating it from the puzzle window).
 			CrypWordFrameParameters parameters;
 			
 			parameters = getCrypWordFrameParameters();
@@ -170,6 +180,35 @@ public class CrypSwingBtnEvent implements ActionListener {
 			
 		case "CLEAR":
 			clear();
+			break;
+			
+		case "GUESS":
+			// Based on the plaintext letters already filled in, take a guess at the rest of them.
+			CrypAlphabetMapping alphabetMap = new CrypAlphabetMapping(false);
+			// Loop through all the known plaintext.
+			for (int lineIndex = 0; lineIndex < CrypSwingFrame.NUMBER_OF_LINES; lineIndex++)
+				for (int charIndex = 0; charIndex < CrypSwingFrame.LINE_LENGTH; charIndex++) {
+					// If the plaintext is alphabetical, that's one clue we should use.
+					String plaintextString = gui.plaintext[charIndex][lineIndex].getText();
+					if (plaintextString != null)
+						if (plaintextString.trim().length() > 0) {
+							char plaintextChar = plaintextString.charAt(0);
+							if (plaintextChar >= 'A' && plaintextChar <= 'Z') {
+								// Now we can narrow down the alphabet map according to that known plaintext.
+								alphabetMap.narrowDownLetters(gui.ciphertext[charIndex][lineIndex].getText().charAt(0), Collections.singletonList(plaintextChar));
+							}
+						}
+				}
+			// Now that we have a reduced alphabet map, reduce it further by guessing more words.
+			CrypCiphertextWordMappingGroup wordMapGroup = new CrypCiphertextWordMappingGroup(this.puzzle, alphabetMap);
+			// Based on the reduced alphabet map, look up translations.
+			for (HashMap.Entry<Character, CrypLetterMapping> entry : alphabetMap.translations.entrySet())
+				if (entry.getValue().size() == 1)
+					gui.translateEverywhere(entry.getKey().toString(), entry.getValue().possiblePlaintext());
+			break;
+			
+		case "ABOUT":
+			JOptionPane.showMessageDialog(null, "CrypSwing version 3.0, 2022", "About CrypSwing", JOptionPane.PLAIN_MESSAGE);
 		}
 	}
 }

@@ -8,7 +8,7 @@ import java.util.Arrays;
  * This self-contained program generates a cryptogram.
  * @author Bitman
  * @version 2.0 01/20/21
- * @version 2.1 01/02/21
+ * @version 2.1 01/02/22
  */
 public class Pyrc {
 
