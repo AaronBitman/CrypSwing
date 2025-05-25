@@ -21,18 +21,18 @@ public class CrypFrequencyTable {
 	 */
 	CrypFrequencyTable(String puzzle) {
 
-		final int CAPTIAL_LETTER_OFFSET = 65;
+		final int CAPITAL_LETTER_OFFSET = 65;
 		int puzzleLength = puzzle.length();
 		char currentCharacter;
 		int index; //used for several purposes
 
 		for (index = 0; index < LETTERS_IN_ALPHABET; index++)
-			frequencyTable[index] = new CrypFreqTableEntry((char)(index + CAPTIAL_LETTER_OFFSET));
+			frequencyTable[index] = new CrypFreqTableEntry((char)(index + CAPITAL_LETTER_OFFSET));
 
 		for (index = 0; index < puzzleLength; index++) {
 			currentCharacter = puzzle.charAt(index);
 			if (currentCharacter >= 'A' && currentCharacter <= 'Z')
-				frequencyTable[(int) currentCharacter - CAPTIAL_LETTER_OFFSET].increment();
+				frequencyTable[(int) currentCharacter - CAPITAL_LETTER_OFFSET].increment();
 		}
 		
 		freqAlpha = setFreqAlpha();
