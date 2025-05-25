@@ -75,6 +75,7 @@ class CrypFreqTableEntry implements Comparable<CrypFreqTableEntry> {
 		 * @param entry2	The second entry to be compared
 		 * @return 1 if the second entry should come first, -1 if the second one should
 		 */
+			@Override
 			public int compare(CrypFreqTableEntry entry1, CrypFreqTableEntry entry2) {
 				return entry1.compareTo(entry2);
 			}
